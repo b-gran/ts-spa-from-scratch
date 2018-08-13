@@ -38,6 +38,6 @@ module.exports = {
 
   // We need to tell the devserver where our content is
   devServer: {
-    contentBase: './dist',
+    contentBase: './build',
   },
 }
