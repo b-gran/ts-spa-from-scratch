@@ -103,3 +103,114 @@ npm i ts-loader
   ]
 }
 ```
+
+`webpack.config.js`
+```js
+module.exports = {
+  mode: 'development',
+
+  // Generate source maps in the compiled output
+  devtool: 'inline-source-map',
+
+  // File to start traversing the dependency graph
+  entry: './src/index.tsx',
+
+  // Put our compiled JS in the buil directory
+  output: {
+    filename: 'index.js',
+    path: __dirname + '/build',
+  },
+
+  // Loaders for the file types we're using
+  module: {
+    rules: [{
+      test: /\.tsx?$/,
+      loader: 'ts-loader',
+    }],
+  },
+
+  // Allow us to resolve these extensions (when importing modules) without explicitly specifying them
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js'],
+  },
+}
+```
+
+## 4 Hot module reloading
+
+```bash
+# The dev server is a separate package
+npm i webpack-dev-server
+
+# Generates HTML files automatically (with our scripts included)
+npm i html-webpack-plugin
+```
+
+`webpack.config.js`
+```js
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+module.exports = {
+  mode: 'development',
+
+  // Generate source maps in the compiled output
+  devtool: 'inline-source-map',
+
+  entry: [
+    // Tells the compiled bundle where to connect to the dev server
+    'webpack-dev-server/client?http://localhost:8080',
+
+    // This entry point will actually reload chunks
+    'webpack/hot/only-dev-server',
+
+    // File to start traversing our source dependency graph
+    './src/index.tsx',
+  ],
+
+  // Put our compiled JS in the build directory
+  output: {
+    filename: 'index.js',
+    path: __dirname + '/build',
+
+    // Puts compiled output into the root of the /build directory.
+    publicPath: '/',
+  },
+
+  // Loaders for the file types we're using
+  module: {
+    rules: [{
+      test: /\.tsx?$/,
+      loader: 'ts-loader',
+    }],
+  },
+
+  // Allow us to resolve these extensions (when importing modules) without explicitly specifying them
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js'],
+  },
+
+  plugins: [
+    // Generate an index.html for us that automatically includes the right compiled output.
+    new HtmlWebpackPlugin({
+      title: 'Our SPA!',
+    }),
+
+    // Enable HMR for our builds
+    new webpack.HotModuleReplacementPlugin(),
+  ],
+
+  // We need to tell the devserver where our content is
+  devServer: {
+    // Where to serve non-webpack content from
+    contentBase: './build',
+
+    // The devserver will be notified about hot updates
+    hot: true,
+
+    // Serves everything in build/ from
+    //    localhost:8080/
+    publicPath: '/',
+  },
+}
+```
