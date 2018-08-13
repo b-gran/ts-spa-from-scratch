@@ -29,10 +29,21 @@ module.exports = {
 
   // Loaders for the file types we're using
   module: {
-    rules: [{
-      test: /\.tsx?$/,
-      loader: 'ts-loader',
-    }],
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              babelrc: false,
+              plugins: ['react-hot-loader/babel'],
+            },
+          },
+          'ts-loader',
+        ],
+      },
+    ],
   },
 
   // Allow us to resolve these extensions (when importing modules) without explicitly specifying them

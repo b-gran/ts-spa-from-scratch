@@ -144,6 +144,12 @@ npm i webpack-dev-server
 
 # Generates HTML files automatically (with our scripts included)
 npm i html-webpack-plugin
+
+# React HMR
+npm i babel-core babel-loader react-hot-loader
+
+# Types for webpack module
+npm i @types/webpack-env
 ```
 
 `webpack.config.js`
@@ -179,10 +185,21 @@ module.exports = {
 
   // Loaders for the file types we're using
   module: {
-    rules: [{
-      test: /\.tsx?$/,
-      loader: 'ts-loader',
-    }],
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              babelrc: false,
+              plugins: ['react-hot-loader/babel'],
+            },
+          },
+          'ts-loader',
+        ],
+      },
+    ],
   },
 
   // Allow us to resolve these extensions (when importing modules) without explicitly specifying them

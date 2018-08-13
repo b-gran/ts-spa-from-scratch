@@ -1,10 +1,8 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-
-const SomeComponent: React.SFC<{}> = () => 
-  <p>hello, world!</p>
+import App from './App'
 
 ReactDOM.render(
-  <SomeComponent />,
+  <App />,
   document.body
 )
