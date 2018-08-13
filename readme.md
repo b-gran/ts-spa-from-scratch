@@ -64,3 +64,42 @@ npm i @types/react @types/react-dom react react-dom
   ]
 }
 ```
+
+## 3 Supporting the browser
+
+```bash
+# We're finally going to need webpack
+npm i webpack webpack-cli
+
+# webpack needs to compile our typescript files.
+# This loader knows about our tsconfig.json
+npm i ts-loader
+```
+
+```diff
+{
+  "compilerOptions": {
+    "outDir": "build", // Where to write the compiled js
+    "module": "commonjs", // Type of module in the output
+    "target": "es5", // Js version of the output
+    "lib": ["es6", "dom"], // Types for libraries & language features (for use in TS)
+    "allowJs": true, // Allows us to include js files during compilation
+    "rootDir": "src",
+
+    // Use node's module resolution algorithm (this is the one you're familiar with)
+    // to resolve imports.
+    "moduleResolution": "node",
+
+    // Converts JSX to React.createElement() calls
+    "jsx": "react",
+
++   // Generate source maps
++   "sourceMap": true
+  },
+  "exclude": [
+    "node_modules",
+    "build",
++   "./*.js"
+  ]
+}
+```
