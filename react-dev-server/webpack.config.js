@@ -1,3 +1,6 @@
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
 module.exports = {
   mode: 'development', 
 
@@ -24,5 +27,17 @@ module.exports = {
   // Allow us to resolve these extensions (when importing modules) without explicitly specifying them
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
+  },
+
+  plugins: [
+    // Generate an index.html for us that automatically includes the right compiled output.
+    new HtmlWebpackPlugin({
+      title: 'Our SPA!',
+    }),
+  ],
+
+  // We need to tell the devserver where our content is
+  devServer: {
+    contentBase: './dist',
   },
 }
