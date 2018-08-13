@@ -12,7 +12,7 @@ npm i @types/node
 ```
 
 ### Compiler options for vanilla apps
-```json
+```js
 {
   "compilerOptions": {
     "outDir": "build", // Where to write the compiled js
