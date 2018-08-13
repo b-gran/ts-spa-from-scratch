@@ -1,4 +1,5 @@
 # npm/js/ts files
 */node_modules
+*/build
 
 *.swp
