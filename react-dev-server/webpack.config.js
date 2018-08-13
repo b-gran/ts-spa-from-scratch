@@ -7,13 +7,24 @@ module.exports = {
   // Generate source maps in the compiled output
   devtool: 'inline-source-map',
 
-  // File to start traversing the dependency graph
-  entry: './src/index.tsx',
+  entry: [
+    // Tells the compiled bundle where to connect to the dev server
+    'webpack-dev-server/client?http://localhost:8080',
 
-  // Put our compiled JS in the buil directory
+    // This entry point will actually reload chunks
+    'webpack/hot/only-dev-server',
+
+    // File to start traversing our source dependency graph
+    './src/index.tsx',
+  ],
+
+  // Put our compiled JS in the build directory
   output: {
     filename: 'index.js',
     path: __dirname + '/build',
+
+    // Puts compiled output into the root of the /build directory.
+    publicPath: '/',
   },
 
   // Loaders for the file types we're using
@@ -34,10 +45,21 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'Our SPA!',
     }),
+
+    // Enable HMR for our builds
+    new webpack.HotModuleReplacementPlugin(),
   ],
 
   // We need to tell the devserver where our content is
   devServer: {
+    // Where to serve non-webpack content from
     contentBase: './build',
+
+    // The devserver will be notified about hot updates
+    hot: true,
+
+    // Serves everything in build/ from 
+    //    localhost:8080/
+    publicPath: '/',
   },
 }
